@@ -22,7 +22,7 @@
     <canvas id="starfield"></canvas>
     <script>
         const canvas = document.getElementById("starfield");
-        const context = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -46,11 +46,11 @@
         }
         
         function drawStars() {
-            context.fillStyle = "white";
+            ctx.fillStyle = "white";
             stars.forEach(star => {
-                context.beginPath();
-                context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                context.fill();
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
             });
         }
 
@@ -65,15 +65,16 @@
         }
 
         function drawText() {
-            context.fillStyle = "white"; 
-            context.font = "30px Arial";
-            context.fillText("Starfield Animation", canvas.width / 2 - 100, canvas.height / 2);
+            ctx.fillStyle = "white";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Starfield Animation", canvas.width / 2, canvas.height / 2);
         }
 
         function animate() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawStars();
-            drawText();
+            drawText(); // Ensure text is drawn LAST
             updateStars();
             requestAnimationFrame(animate);
         }
