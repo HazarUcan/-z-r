@@ -1,16 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="https://raw.githubusercontent.com/sojijr/valentine-website/main/public/images/favicon.png">
-    <link rel="icon" href="public/images/favicon.png" type="image/x-icon" />  
-    <title>Happy Valentine's Day</title>
-    <link rel="stylesheet" href="public/style.css">
-  </head>
-  <body>
+    <title>Starfield Animation</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: black;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
     <canvas id="starfield"></canvas>
-    <button id="valentinesButton">Click Me! ❤</button>
-    <script src="script.js"></script>
-  </body>
+    <script>
+        const canvas = document.getElementById("starfield");
+        const context = canvas.getContext("2d");
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        const stars = [];
+        const numStars = 100;
+        
+        function createStars() {
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2 + 1,
+                    speed: Math.random() * 2 + 0.5
+                });
+            }
+        }
+        
+        function drawStars() {
+            context.fillStyle = "white";
+            stars.forEach(star => {
+                context.beginPath();
+                context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                context.fill();
+            });
+        }
+
+        function updateStars() {
+            stars.forEach(star => {
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        function drawText() {
+            context.fillStyle = "white"; 
+            context.font = "30px Arial";
+            context.fillText("Starfield Animation", canvas.width / 2 - 100, canvas.height / 2);
+        }
+
+        function animate() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawStars();
+            drawText();
+            updateStars();
+            requestAnimationFrame(animate);
+        }
+
+        createStars();
+        animate();
+    </script>
+</body>
 </html>
